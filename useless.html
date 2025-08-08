@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Rizz-o-Meter 🎯</title>
+  <style>
+    :root{
+      --bg:#0f1724;
+      --card:#0b1220;
+      --accent:#ffd166;
+      --muted:#9aa7c7;
+      --good:#4ade80;
+      --bad:#ff6b6b;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:Inter,Segoe UI,Arial,sans-serif;
+      background:
+        radial-gradient(1000px 600px at 10% 10%, rgba(255,209,102,0.06), transparent 8%),
+        radial-gradient(900px 500px at 90% 90%, rgba(99,102,241,0.04), transparent 8%),
+        var(--bg);
+      color:#e6eef8;
+      display:flex;align-items:center;justify-content:center;
+      min-height:100vh;padding:24px;
+    }
+
+    .card{
+      width:100%;max-width:760px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:14px;padding:22px;border:1px solid rgba(255,255,255,0.04);
+      box-shadow:0 10px 40px rgba(2,6,23,0.6);
+    }
+
+    header{display:flex;align-items:center;gap:14px}
+    .logo{
+      width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#ff6b6b);
+      display:flex;align-items:center;justify-content:center;font-weight:700;color:#071024;font-size:22px;
+      box-shadow:0 6px 18px rgba(255,209,102,0.08);
+    }
+    h1{margin:0;font-size:20px}
+    p.lead{margin:4px 0 18px;color:var(--muted);font-size:13px}
+
+    .grid{display:grid;grid-template-columns:1fr 320px;gap:18px}
+    @media (max-width:820px){ .grid{grid-template-columns:1fr} }
+
+    .controls{
+      background:rgba(255,255,255,0.02);padding:14px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);
+    }
+
+    label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
+    input[type="text"]{
+      width:100%;padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);
+      background:transparent;color:inherit;font-size:14px;
+    }
+
+    .buttons{display:flex;gap:8px;margin-top:10px}
+    button{
+      flex:1;padding:10px 12px;border-radius:10px;border:0;background:var(--accent);color:#071024;
+      font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(255,209,102,0.06);
+    }
+    button.secondary{background:transparent;color:var(--accent);border:1px solid rgba(255,209,102,0.08);font-weight:600}
+
+    .meter{
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+      padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.02);
+      display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center;height:100%;
+    }
+
+    .gauge{
+      width:100%;height:18px;background:rgba(255,255,255,0.03);border-radius:12px;overflow:hidden;
+      position:relative;border:1px solid rgba(255,255,255,0.02);
+    }
+    .fill{height:100%;width:0%;background:linear-gradient(90deg,var(--bad),var(--accent),var(--good));transition:width 1s cubic-bezier(.2,.9,.3,1)}
+    .score{font-size:40px;font-weight:800;letter-spacing:-1px;margin:6px 0;color:var(--accent)}
+    .desc{font-size:13px;color:var(--muted);text-align:center}
+
+    .pickup{
+      background:rgba(255,255,255,0.02);padding:10px;border-radius:10px;width:100%;min-height:78px;
+      display:flex;flex-direction:column;gap:8px;align-items:flex-start;justify-content:center;
+    }
+    .line{font-weight:700}
+    .small{font-size:12px;color:var(--muted)}
+
+    .sparkle{
+      position:absolute;right:18px;top:-24px;width:44px;height:44px;border-radius:50%;
+      background:linear-gradient(135deg,#ffd166,#ff6b6b);filter:blur(18px);opacity:0.12;
+    }
+
+    footer{margin-top:14px;color:var(--muted);font-size:12px;text-align:center}
+    .tiny{font-size:11px;color:#9aa7c7}
+  </style>
+</head>
+<body>
+  <div class="card" role="application" aria-label="Rizz-o-Meter app">
+    <header>
+      <div class="logo">RZ</div>
+      <div>
+        <h1>Rizz-o-Meter</h1>
+        <p class="lead">Measure your charm (100% for fun). Generate random pickup lines and flex on friends.</p>
+      </div>
+    </header>
+
+AADHIi, [08-08-2025 22:36]
+<div class="grid" style="margin-top:14px">
+      <div class="controls" aria-hidden="false">
+        <label for="name">Your name (optional)</label>
+        <input id="name" type="text" placeholder="e.g., Arun" maxlength="24" />
+
+        <div style="margin-top:12px">
+          <label>Choose vibe</label>
+          <div style="display:flex;gap:8px">
+            <button class="secondary" id="vibe-chill" type="button">Chill</button>
+            <button class="secondary" id="vibe-smooth" type="button">Smooth</button>
+            <button class="secondary" id="vibe-raw" type="button">Raw</button>
+          </div>
+        </div>
+
+        <div class="buttons" style="margin-top:14px">
+          <button id="measure">Measure My Rizz</button>
+          <button class="secondary" id="line-btn">Give Me a Line</button>
+        </div>
+
+        <div style="margin-top:10px;display:flex;gap:8px">
+          <button class="secondary" id="randomize">Randomize</button>
+          <button class="secondary" id="reset">Reset</button>
+        </div>
+
+        <p class="tiny" style="margin-top:12px">Tip: press <strong>Measure My Rizz</strong> then try <strong>Give Me a Line</strong> — results are absurdly confident.</p>
+      </div>
+
+      <div class="meter" role="region" aria-live="polite">
+        <div style="width:100%;position:relative">
+          <div class="sparkle" aria-hidden="true"></div>
+          <div class="gauge" aria-hidden="true">
+            <div class="fill" id="fill"></div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:12px;width:100%;justify-content:space-between">
+          <div>
+            <div class="score" id="score">--</div>
+            <div class="desc" id="desc">No data yet. Measure your rizz.</div>
+          </div>
+          <div style="width:48%;min-width:160px">
+            <div class="pickup" id="pickup">
+              <div class="line" id="line">Your future pickup line will appear here.</div>
+              <div class="small" id="line-meta">Press "Give Me a Line" to get blessed.</div>
+            </div>
+          </div>
+        </div>
+        <footer><span id="footer-text">Rizz-o-Meter • For entertainment only</span></footer>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Data banks
+    const lines = [
+      "Are you a magician? Because whenever I look at you, everyone else disappears.",
+      "Do you have a map? I keep getting lost in your eyes.",
+      "If being gorgeous was a crime, you'd be serving a life sentence.",
+      "You must be tired — you’ve been running through my mind all day.",
+      "Is your name Wi-Fi? Because I'm feeling a connection.",
+      "I was today years old when I met the reason I'd stop swiping.",
+      "Do you like bad boys/girls? Because I'm bad... at everything except noticing you.",
+      "Is your aura on Spotify? Because I just found my new favorite playlist.",
+      "You’re the reason I deleted my dating apps.",
+      "Excuse me, but I think you dropped something: my jaw.",
+      'Your dreamy pickup line"You must be made of copper and tellurium — because you’re Cu-Te.",
+    "If beauty were time, you'd be eternity.",
+    "Do you have a map? I keep getting lost in your eyes.",
+    "Are you a parking ticket? Because you’ve got ‘fine’ written all over you.",
+    "If you were a vegetable, you'd be a cute-cumber.",
+    "Do you like raisins? How about a date?",
+    "You must be tired — you've been running through my mind all day.",
+    "Are you an interior decorator? When I saw you the whole room became beautiful.",
+    "If kisses were snowflakes, I’d send you a blizzard.",
+    "Is your name Google? Because you have everything I’ve been searching for.",
+    "Are you a camera? Every time I look at you, I smile.",
+    "Can I follow you home? Cause my parents always told me to follow my dreams.",
+    "You’re the reason I forgot my pic will appear here ✨';
+  });
+    ];
+
+    const vibes = {
+      chill: ["laid-back", -8],
+      smooth: ["confident", +10],
+      raw: ["chaotic", -4]
+    };
+
+    let currentVibe = 'smooth';
+
+    // Elements
+    const fillEl = document.getElementById('fill');
+    const scoreEl = document.getElementById('score');
+    const descEl = document.getElementById('desc');
+    const lineEl = document.getElementById('line');
+    const lineMeta = document.getElementById('line-meta');
+    const nameInput = document.getElementById('name');
+
+    // Utility
+    function randInt(min, max){ return Math.floor(Math.random()*(max-min+1))+min; }
+    function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
+
+    // Compute rizz score (purely for fun)
+    function computeRizz(){
+      // base random 0-100
+      let base = randInt(18, 92);
+
+AADHIi, [08-08-2025 22:36]
+// slight name boost if provided (non-serious)
+      const name = nameInput.value.trim();
+      if(name.length > 0){
+        base += (name.length % 7) + 3; // tiny boost
+      }
+      // vibe influence
+      const vibeAdj = vibes[currentVibe][1] || 0;
+      base += randInt(vibeAdj - 6, vibeAdj + 6);
+      // micro-luck
+      const luck = randInt(-8, 12);
+      let final = clamp(base + luck, 0, 100);
+      return final;
+    }
+
+    function describe(score){
+      if(score >= 90) return "W Rizz — Legendary. People call you 'smooth operator'.";
+      if(score >= 75) return "Top-tier rizz — Confidence unlocked.";
+      if(score >= 55) return "Decent rizz — You got moves.";
+      if(score >= 35) return "Low-key — Try a compliment or two.";
+      if(score >= 15) return "NPC rizz — Practice makes imperfect.";
+      return "No rizz detected — Charge your charm!";
+    }
+
+    // Actions
+    document.getElementById('measure').addEventListener('click', ()=>{
+      scoreEl.textContent = "...";
+      descEl.textContent = "Calculating aura alignment...";
+      fillEl.style.width = '0%';
+      // fake thinking
+      setTimeout(()=>{
+        const s = computeRizz();
+        scoreEl.textContent = s + "/100";
+        fillEl.style.width = s + "%";
+        descEl.textContent = describe(s);
+        // small visual tweak: change gradient via width (not strict color changes)
+        document.getElementById('footer-text').textContent = Vibe: ${vibes[currentVibe][0]} • Result generated ${new Date().toLocaleTimeString()};
+      }, 750 + randInt(0,700));
+    });
+
+    document.getElementById('line-btn').addEventListener('click', ()=>{
+      const name = nameInput.value.trim();
+      const picked = lines[randInt(0, lines.length-1)];
+      const personalized = name ? picked.replace(/you|your|you're/gi, match => {
+        // simple playful personalization
+        return match + , ${name};
+      }) : picked;
+      lineEl.textContent = personalized;
+      lineMeta.textContent = Confidence: ${randInt(62,99)}% • Press "Measure" first for max effect.;
+      // little flash
+      lineEl.animate([{opacity:0.4},{opacity:1}],{duration:400, easing:'ease-out'});
+    });
+
+    // Vibe buttons
+    document.getElementById('vibe-chill').addEventListener('click', ()=>{
+      currentVibe='chill';
+      document.getElementById('footer-text').textContent = 'Vibe set to chill';
+    });
+    document.getElementById('vibe-smooth').addEventListener('click', ()=>{
+      currentVibe='smooth';
+      document.getElementById('footer-text').textContent = 'Vibe set to smooth';
+    });
+    document.getElementById('vibe-raw').addEventListener('click', ()=>{
+      currentVibe='raw';
+      document.getElementById('footer-text').textContent = 'Vibe set to raw';
+    });
+
+    // Randomize & reset
+    document.getElementById('randomize').addEventListener('click', ()=>{
+      // toss name and pick random vibe
+      nameInput.value = ["Arjun","Maya","Zeeshan","Priya","Sai","Rhea"][randInt(0,5)];
+      const keys = Object.keys(vibes);
+      currentVibe = keys[randInt(0, keys.length-1)];
+      document.getElementById('footer-text').textContent = Randomized — vibe: ${vibes[currentVibe][0]};
+      // auto-run measure
+      document.getElementById('measure').click();
+      setTimeout(()=>document.getElementById('line-btn').click(), 1100);
+    });
+
+    document.getElementById('reset').addEventListener('click', ()=>{
+      nameInput.value = '';
+      scoreEl.textContent = '--';
+      descEl.textContent = 'No data yet. Measure your rizz.';
+      fillEl.style.width = '0%';
+      lineEl.textContent = 'Your future pickup line will appear here.';
+      lineMeta.textContent = 'Press "Give Me a Line" to get blessed.';
+      document.getElementById('footer-text').textContent = 'Rizz-o-Meter • For entertainment only';
+    });
+
+    // small keyboard shortcut: press Enter in name to measure
+    nameInput.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter'){ e.preventDefault(); document.getElementById('measure').click(); }
+    });
+
+AADHIi, [08-08-2025 22:36]
+// initial playful sample
+    // automatically show a sample line after load
+    setTimeout(()=>document.getElementById('line-btn').click(),900);
+  </script>
+</body>
+</html>
+
+AADHIi, [08-08-2025 22:40]
+<!DOCTYPE html>
+<html>
+<head>
+<title>Rizz-o-Meter</title>
+<style>
+body {font-family: Arial; text-align: center; background: #111; color: #fff;}
+button {padding: 10px 20px; margin: 10px; border: none; background: gold; color: #000; font-weight: bold; cursor: pointer;}
+#score {font-size: 40px; margin-top: 20px; color: gold;}
+</style>
+</head>
+<body>
+<h1>🔥 Rizz-o-Meter 🔥</h1>
+<p>Check your charm level instantly!</p>
+<input id="name" placeholder="Enter your name">
+<br>
+<button onclick="measureRizz()">Measure My Rizz</button>
+<button onclick="pickupLine()">Give Me a Line</button>
+<div id="score">--</div>
+<p id="desc"></p>
+<p id="line"></p>
+
+<script>
+function measureRizz(){
+  let name = document.getElementById("name").value;
+  let score = Math.floor(Math.random() * 101);
+  document.getElementById("score").innerText = score + "/100";
+  document.getElementById("desc").innerText =
+    score > 80 ? "W Rizz! Smooth operator." :
+    score > 50 ? "Decent Rizz. Keep going." :
+    "NPC Rizz... needs work.";
+}
+
+function pickupLine(){
+  let lines = [
+    "Are you a magician? Because you just made everyone else disappear.",
+    "Do you have Wi-Fi? Because I'm feeling a connection.",
+    "If beauty were a crime, you'd be serving life.",
+    "Are you French? Because *Eiffel* for you.",
+    "Do you believe in love at first sight-or should I walk by again?",
+    "Are you a bank loan? Because you have my interest.",
+    "Is your name Google? Because you have everything I'm searching for.", "Are you the ocean? Because I'm completely lost at sea without you.",
+    "Do you like raisins? How about a date?",
+    "Are you a keyboard? Because you're just my type.."
+  ];
+  let pick = lines[Math.floor(Math.random() * lines.length)];
+  document.getElementById("line").innerText = pick;
+}
+</script>
+</body>
+</html>
